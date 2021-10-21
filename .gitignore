@@ -1,5 +1,5 @@
 output/*
-!output/final_learned_config.p
+!output/final_learned_config.p.zip
 
 music/*
 !music/music.zip
