@@ -1,1 +1,5 @@
 output/*
+!output/final_learned_config.p
+
+music/*
+!music/music.zip
