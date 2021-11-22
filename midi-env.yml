@@ -1,0 +1,14 @@
+name: midi-env
+channels:
+  - defaults
+dependencies:
+  - python=2.7
+  - theano
+  - pip
+  - pygpu
+  - nose
+  - pip:
+    - python-midi
+    - theano-lstm
+prefix: /home/cjuneau/.conda/envs/midi-env
+
