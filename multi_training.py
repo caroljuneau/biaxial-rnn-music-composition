@@ -2,7 +2,7 @@ import os, random
 from midi_to_statematrix import *
 from data import *
 import cPickle as pickle
-
+import time
 import signal
 
 batch_width = 10 # number of sequences in a batch
@@ -24,8 +24,8 @@ def loadPieces(dirpath):
             continue
 
         pieces[name] = outMatrix
-        print "Loaded {}".format(name)
-
+        #print "Loaded {}".format(name)
+    print "loaded {} pieces".format(len(pieces))
     return pieces
 
 def getPieceSegment(pieces):
@@ -48,12 +48,14 @@ def trainPiece(model,pieces,epochs,start=0):
         stopflag[0] = True
     old_handler = signal.signal(signal.SIGINT, signal_handler)
     for i in range(start,start+epochs):
+        startTime = time.time()
         if stopflag[0]:
             break
         error = model.update_fun(*getPieceBatch(pieces))
         if i % 100 == 0:
-            print "epoch {}, error={}".format(i,error)
-        if i % 500 == 0 or (i % 100 == 0 and i < 1000):
+            executionTime = time.time() - startTime
+            print "epoch {}, error={}, time={}".format(i,error,executionTime)
+        if i % 500 == 0:
             xIpt, xOpt = map(numpy.array, getPieceSegment(pieces))
             noteStateMatrixToMidi(numpy.concatenate((numpy.expand_dims(xOpt[0], 0), model.predict_fun(batch_len, 1, xIpt[0])), axis=0),'output/sample{}'.format(i))
             pickle.dump(model.learned_config,open('output/params{}.p'.format(i), 'wb'))

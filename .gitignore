@@ -1,5 +1,7 @@
 output/*
-!output/final_learned_config.p.zip
+!output/*.p.zip
 
 music/*
-!music/music.zip
+!music/*.zip
+
+*.pyc
