@@ -42,7 +42,7 @@ def getPieceBatch(pieces):
     i,o = zip(*[getPieceSegment(pieces) for _ in range(batch_width)])
     return numpy.array(i), numpy.array(o)
 
-def trainPiece(model,pieces,epochs,start=0):
+def trainPiece(model,pieces,epochs,start=0,output_dir):
     stopflag = [False]
     def signal_handler(signame, sf):
         stopflag[0] = True
@@ -57,6 +57,6 @@ def trainPiece(model,pieces,epochs,start=0):
             print "epoch {}, error={}, time={}".format(i,error,executionTime)
         if i % 500 == 0:
             xIpt, xOpt = map(numpy.array, getPieceSegment(pieces))
-            noteStateMatrixToMidi(numpy.concatenate((numpy.expand_dims(xOpt[0], 0), model.predict_fun(batch_len, 1, xIpt[0])), axis=0),'output/sample{}'.format(i))
-            pickle.dump(model.learned_config,open('output/params{}.p'.format(i), 'wb'))
+            noteStateMatrixToMidi(numpy.concatenate((numpy.expand_dims(xOpt[0], 0), model.predict_fun(batch_len, 1, xIpt[0])), axis=0),output_dir+'/sample{}'.format(i))
+            pickle.dump(model.learned_config,open(output_dir+'/params{}.p'.format(i), 'wb'))
     signal.signal(signal.SIGINT, old_handler)

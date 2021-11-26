@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --output job%j.out
 #SBATCH --error job%j.err
-#SBATCH -p gpu-v100-16gb
+#SBATCH -p gpu-v100-32gb
 
 module load python2.7
 module load cuda/9.0
@@ -29,7 +29,7 @@ NOW=$(date +"%F_%H-%M-%S")
 OUTPUT_DIR="training_$NOW"
 mkdir output/$OUTPUT_DIR
 
-THEANO_FLAGS="device=cuda,floatX=float32" python training_script.py $INPUT_DIR $OUTPUT_DIR 
+THEANO_FLAGS="device=cuda,floatX=float32,cxx=''" python training_script.py $INPUT_DIR output/$OUTPUT_DIR 
 
 conda deactivate 
 python -c "print('done')"

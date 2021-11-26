@@ -1,7 +1,9 @@
 output/*
-!output/*.p.zip
+!output/*.zip
 
 music/*
 !music/*.zip
 
 *.pyc
+
+job*
