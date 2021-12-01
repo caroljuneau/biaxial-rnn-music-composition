@@ -42,19 +42,20 @@ def getPieceBatch(pieces):
     i,o = zip(*[getPieceSegment(pieces) for _ in range(batch_width)])
     return numpy.array(i), numpy.array(o)
 
-def trainPiece(model,pieces,epochs,start=0,output_dir):
+def trainPiece(model,pieces,epochs,output_dir,start=0):
     stopflag = [False]
     def signal_handler(signame, sf):
         stopflag[0] = True
     old_handler = signal.signal(signal.SIGINT, signal_handler)
+    startTime = time.time()
     for i in range(start,start+epochs):
-        startTime = time.time()
         if stopflag[0]:
             break
         error = model.update_fun(*getPieceBatch(pieces))
         if i % 100 == 0:
             executionTime = time.time() - startTime
             print "epoch {}, error={}, time={}".format(i,error,executionTime)
+            startTime = time.time()
         if i % 500 == 0:
             xIpt, xOpt = map(numpy.array, getPieceSegment(pieces))
             noteStateMatrixToMidi(numpy.concatenate((numpy.expand_dims(xOpt[0], 0), model.predict_fun(batch_len, 1, xIpt[0])), axis=0),output_dir+'/sample{}'.format(i))
