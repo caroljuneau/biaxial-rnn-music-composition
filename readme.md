@@ -4,9 +4,9 @@ Project for UofSC CSCE 585: Machine Learning Systems
 
 Carol Juneau, Joseph Cammarata, Brody Norton
 
-The code for this project has largely been adapted from Daniel Johnson's project: https://github.com/danieldjohnson/biaxial-rnn-music-composition
+The code for this project has largely been adapted from [Daniel Johnson's project](https://github.com/danieldjohnson/biaxial-rnn-music-composition).
 
-We have updated the instructions from the original project:
+We have updated the instructions from the original project.
 
 ## Generating Instructions
 This requires that you have conda and GCC. Unlike training it does not require a GPU.
@@ -37,6 +37,10 @@ m = model.Model([300,300],[100,50],dropout=0.5)
 Load in the weights:
 ```python
 m.learned_config = pickle.load("open("output/classical1/params_final.p","rb"))
+```
+If you are using a CPU rather than a GPU, run this line: 
+```python
+theano.config.experimental.unpickle_gpu_on_cpu = True
 ```
 Generate a composition:
 ```python
@@ -89,3 +93,11 @@ You can also generate pieces as in the previous section:
 ```python
 main.gen_adaptive(m,pcs,1,name="composition")
 ```
+
+## Notes
+
+I used the university's RCI computer to run the training for this project.
+
+Those scripts are included in this repo -- training.sh and training_script.py. I cannot guarantee that these will work for your machine. 
+
+There is also a script called using_gpu_test.py which is taken from the Theano documentation. This tests whether Theano is correctly running on the GPU or if it is running on the CPU. 
