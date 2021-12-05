@@ -98,6 +98,6 @@ main.gen_adaptive(m,pcs,1,name="composition")
 
 I used the university's RCI computer to run the training for this project.
 
-Those scripts are included in this repo -- training.sh and training_script.py. I cannot guarantee that these will work for your machine. 
+Those scripts are included in this repo -- [training.sh](training.sh) and [training_script.py](training_script.py). I cannot guarantee that these will work for your machine. 
 
-There is also a script called using_gpu_test.py which is taken from the Theano documentation. This tests whether Theano is correctly running on the GPU or if it is running on the CPU. 
+There is also a script called [using_gpu_test.py](using_gpu_test.py) which is taken from the Theano documentation. This tests whether Theano is correctly running on the GPU or if it is running on the CPU. 
