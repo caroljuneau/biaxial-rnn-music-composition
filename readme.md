@@ -1,57 +1,91 @@
 # Biaxial Recurrent Neural Network for Music Composition
 
-This code implements a recurrent neural network trained to generate classical music. The model, which uses LSTM layers and draws inspiration from convolutional neural networks, learns to predict which notes will be played at each time step of a musical piece.
+Project for UofSC CSCE 585: Machine Learning Systems
 
-You can read about its design and hear examples on [this blog post](http://www.hexahedria.com/2015/08/03/composing-music-with-recurrent-neural-networks/). 
+Carol Juneau, Joseph Cammarata, Brody Norton
 
-## Requirements
+The code for this project has largely been adapted from Daniel Johnson's project: https://github.com/danieldjohnson/biaxial-rnn-music-composition
 
-This code is written in Python, and depends on having Theano and theano-lstm (which can be installed with pip) installed. The bare minimum you should need to do to get everything running, assuming you have Python, is
-```
-sudo pip install --upgrade theano
-sudo pip install numpy scipy theano-lstm python-midi
-```
+We have updated the instructions from the original project:
 
-In addition, the included setup scripts should set up the environment exactly as it was when I trained the network on an Amazon EC2 g2.2xlarge instance with an external EBS volume. Installing it with other setups will likely be slightly different.
+## Generating Instructions
+This requires that you have conda and GCC. Unlike training it does not require a GPU.
 
-## Using it
+First, clone the github repository to your machine.
 
-First, you will need to obtain a large selection of midi music, preferably in 4/4 time, with notes correctly aligned to beats. These can be placed in a directory "music".
+Then create and activate a conda environment that uses python=2.7. There is a yml file included in the repo with all the requirements.
 
-To use the model, you need to first create an instance of the Model class:
+There are midi files of different genres located in the "music" directory. Each zipped directory has midi files for a particular genre. Start by unzipping "classical.zip".
+
+You will also need to go into the "output" directory and unzip a weights file. Start by unzipping "classical1.zip". You will notice that it contains several other files, but the one to notice is "params_final.p" -- this file contains the trained weights that will be used in the model.
+
+In a terminal, make sure you're in the "biaxial-rnn-music-composition" directory and run python. Then enter the following.
 ```python
 import model
-m = model.Model([300,300],[100,50], dropout=0.5)
-```
-where the numbers are the sizes of the hidden layers in the two parts of the network architecture. This will take a while, as this is where Theano will compile its optimized functions.
-
-Next, you need to load in the data:
-```python
+import main
 import multi_training
-pcs = multi_training.loadPieces("music")
+import cPickle as pickle
+```
+Load in your pieces:
+```python
+pcs = multi_training.loadPieces("music/classical")
+```
+Construct the model; this will take some time:
+```python
+m = model.Model([300,300],[100,50],dropout=0.5)
+```
+Load in the weights:
+```python
+m.learned_config = pickle.load("open("output/classical1/params_final.p","rb"))
+```
+Generate a composition:
+```python
+main.gen_adaptive(m,pcs,1,name="composition")
+```
+Alternatively, you can use a for-loop to generate several pieces at a time:
+```python
+for i in range(10):
+    main.gen_adaptive(m,pcs,1,name="composition"+str(i))
 ```
 
-Then, after creating an "output" directory for trained samples, you can start training:
-```python
-multi_training.trainPiece(m, pcs, 10000)
+
+## Training Instructions
+
+This requires that you have conda and GCC and that you are using a GPU with CUDA 9.0.
+
+Note that this process will take a long time. For me it takes around 7.5 hours in total. 
+
+Activate the conda environment described in the previous section. 
+
+Again, you will need some midi files. You can use the same ones in "music/classical" as before, or another genre. 
+
+In a terminal, cd into the "biaxial-rnn-music-composition" directory. Use the following flags to run python from your terminal:
 ```
-
-This will train using 10000 batches of 10 eight-measure segments at a time, and output a sampled output and the learned parameters every 500 iterations.
-
-Finally, you can generate a full composition after training is complete. The function `gen_adaptive` in main.py will generate a piece and also prevent long empty gaps by increasing note probabilities if the network stops playing for too long.
-```python
-gen_adaptive(m,pcs,10,name="composition")
+THEANO_FLAGS="device=cuda,floatX=float32" python
 ```
-
-There are also mechanisms to observe the hidden activations and memory cells of the network, but these are still a work in progress at the moment.
-
-Right now, there is no separate validation step, because my initial goal was to produce interesting music, not to assess the accuracy of this method. It does, however, print out the cost on the training set after every 100 iterations during training.
-
-If you want to save your model weights, you can do
 ```python
-pickle.dump( m.learned_config, open( "path_to_weight_file.p", "wb" ) )
+import model
+import main
+import multi_training
+import cPickle as pickle
 ```
-and if you want to load them, you can do
+Load in your pieces:
 ```python
-m.learned_config = pickle.load(open( "path_to_weight_file.p", "rb" ) )
+pcs = multi_training.loadPieces("music/classical")
+```
+Construct the model; this will take some time:
+```python
+m = model.Model([300,300],[100,50],dropout=0.5)
+```
+Train the model; this step takes the most time:
+```python
+multi_training.trainPiece(m,pcs,10000,"output")
+```
+Finally save the final trained weights:
+```python
+pickle.dump(m.learned_config, open("output/params_final.p","wb"))
+```
+You can also generate pieces as in the previous section:
+```python
+main.gen_adaptive(m,pcs,1,name="composition")
 ```
