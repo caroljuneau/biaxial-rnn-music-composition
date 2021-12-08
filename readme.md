@@ -94,10 +94,37 @@ You can also generate pieces as in the previous section:
 main.gen_adaptive(m,pcs,1,name="composition")
 ```
 
-## Notes
+## Guide to Files in this Repository
 
-I used the university's RCI computer to run the training for this project.
+Original code from Daniel Johnson's project:
+- LICENSE.txt
+- data.py
+- main.py
+- midi_to_statematrix.py
+- model.py
+- multi_training.py (slightly modified)
+- out_to_in_op.py
+- visualize.py
 
-Those scripts are included in this repo -- [training.sh](training.sh) and [training_script.py](training_script.py). I cannot guarantee that these will work for your machine. 
+Our scripts, which were run on the university's HPC research computers:
+- generate.py
+- generating.sh
+- training_script.py
+- training.sh
 
-There is also a script called [using_gpu_test.py](using_gpu_test.py) which is taken from the Theano documentation. This tests whether Theano is correctly running on the GPU or if it is running on the CPU. 
+"music" directory:
+- zip files containing midi files for each genre, used for training and generating
+
+"output" directory:
+- note: versions 1,2,3 of each genre were trained separately but using the same datasets
+- composition0.mid through composition 49.mid, generated using the final weights
+- gen#.err, gen#.out, job#.err, job#.out, logs
+- params_final.p, the final training weights
+- sample0.mid through sample10000.mid, samples generated every 500 iterations during training
+- note: johnson_weights does not have logs or samples since we only had the weights provided by Johnson
+
+Miscellaneous:
+- readme.md
+- midi-env.yml, the conda environment to correctly set up everything
+- visualize.py, taken from Theano documentation to help determine if Theano is correctly using the GPU or if it is defaulting to the CPU
+- .gitignore
