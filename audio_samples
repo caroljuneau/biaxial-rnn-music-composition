@@ -1,0 +1,26 @@
+The audio samples can be found in the playlist linked below. The audio file, genre, and original sample are listed 
+https://www.youtube.com/playlist?list=PLCbOev5SuUokzoSvSZJGP2U1oY8iRSnQE
+
+Our Model (https://github.com/caroljuneau/biaxial-rnn-music-composition/tree/master/output)
+Audio 1. classical3/sample12 
+Audio 2. country2/sample27
+Audio 3. videogame3/sample22
+Audio 4. holiday1/sample5
+Audio 5. jazz1/sample49
+Audio 6. classical3/sample19
+Audio 7. country3/sample2
+Audio 8. videogame2/sample25
+Audio 9. holiday1/sample30
+Audio 10. jazz1/sample18
+
+Daniel's Model Weights (https://github.com/caroljuneau/biaxial-rnn-music-composition/tree/master/johnson)
+Audio 11. classical/sample13
+Audio 12. country1/sample42
+Audio 13. videogame/sample46
+Audio 14. holiday/sample43
+Audio 15. jazz/sample22
+Aduio 16. classical/sample29
+Audio 17. country/sample17
+audio 18. videogame/sample2
+Audio 19. holiday/sample24
+Audio 20. jazz/sample
