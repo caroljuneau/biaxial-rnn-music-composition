@@ -125,8 +125,15 @@ Our scripts, which were run on the university's HPC research computers:
 - sample0.mid through sample10000.mid, samples generated every 500 iterations during training
 - note: johnson_weights does not have logs or samples since we only had the weights provided by Johnson
 
+"johnson" directory:
+- zip files containing the compositions generated using Johnson's training weights for each genre
+
 Miscellaneous:
 - readme.md
+- .gitignore
 - midi-env.yml, the conda environment to correctly set up everything
 - visualize.py, taken from Theano documentation to help determine if Theano is correctly using the GPU or if it is defaulting to the CPU
-- .gitignore
+- 585 Project Presentation.pdf, the presentation slides
+- audio_samples, a guide and youtube link to our samples used in the surveys
+- metadata_spreadsheet.xlsx, a spreadsheet with metadata from the logs created during training
+- results_spreadhseet.xlsx, a spreadsheet with the results from our surveys
