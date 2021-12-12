@@ -8,6 +8,8 @@ The code for this project has largely been adapted from [Daniel Johnson's projec
 
 We have updated the instructions from the original project.
 
+Video Presentation Link: https://youtu.be/lCkIf_xvrh4
+
 ## Generating Instructions
 This requires that you have conda and GCC. Unlike training it does not require a GPU.
 
